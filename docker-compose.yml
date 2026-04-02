@@ -5,8 +5,34 @@ services:
       dockerfile: Dockerfile
     container_name: earnly-api
     ports:
-      - '3000:3000'
+      - '3000:3001'
     environment:
       NODE_ENV: production
-      PORT: 3000
+      PORT: 3001
+      # Inside Docker network, reach Postgres by service name: `postgres`
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/earnly?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: earnly-postgres
+    environment:
+      POSTGRES_DB: earnly
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d earnly']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
