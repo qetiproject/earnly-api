@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: earnly-api
     ports:
-      - '3000:3001'
+      - '3000:3001' # HOST:CONTAINER
     environment:
       NODE_ENV: production
       PORT: 3001
@@ -15,6 +15,9 @@ services:
       postgres:
         condition: service_healthy
     restart: unless-stopped
+    volumes:
+      - ./:/usr/src/app # any changed in container will reflect in host and vice versa
+      - /usr/src/app/node_modules # docker container has own node_modules, not shared with host
 
   postgres:
     image: postgres:16-alpine

@@ -1,23 +1,20 @@
 # Node image
 FROM node:20-alpine
 
-# სამუშაო დირექტორია
-WORKDIR /app
+# Create app directory
+WORKDIR /src/app
 
-# package.json კოპირება
+# Copy package.json first (for caching)
 COPY package*.json ./
 
 # dependencies install
 RUN npm install
 
-# დანარჩენი კოდის კოპირება
+# Copy rest of the app (optional, dev volume mount-ით უკვე sync ხდება)
 COPY . .
-
-# build
-RUN npm run build
 
 # port
 EXPOSE 3000
 
 # run app
-CMD ["node", "dist/main"]
+CMD ["npm", "run", "start:dev"]
