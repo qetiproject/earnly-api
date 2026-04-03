@@ -5,19 +5,25 @@ services:
       dockerfile: Dockerfile
     container_name: earnly-api
     ports:
-      - '3000:3001' # HOST:CONTAINER
+      - '3000:3000' # HOST:CONTAINER
     environment:
-      NODE_ENV: production
-      PORT: 3001
+      NODE_ENV: development
+      PORT: 3000
       # Inside Docker network, reach Postgres by service name: `postgres`
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/earnly?schema=public
+      # Docker volume mount-ზე Nest watch ხშირად არ “გრძნობს” ცვლილებებს.
+      # Polling-ს ჩართვა პრობლემას უმეტეს შემთხვევაში აგვარებს.
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "1000"
+      WATCHPACK_POLLING: "true"
+      WATCHPACK_POLLING_INTERVAL: "1000"
     depends_on:
       postgres:
         condition: service_healthy
     restart: unless-stopped
     volumes:
-      - ./:/usr/src/app # any changed in container will reflect in host and vice versa
-      - /usr/src/app/node_modules # docker container has own node_modules, not shared with host
+      - ./:/src/app
+      - /src/app/node_modules
 
   postgres:
     image: postgres:16-alpine
