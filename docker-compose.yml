@@ -1,0 +1,47 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: earnly-api
+    ports:
+      - '3000:3000' # HOST:CONTAINER
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      # Inside Docker network, reach Postgres by service name: `postgres`
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/earnly?schema=public
+      # Docker volume mount-ზე Nest watch ხშირად არ “გრძნობს” ცვლილებებს.
+      # Polling-ს ჩართვა პრობლემას უმეტეს შემთხვევაში აგვარებს.
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "1000"
+      WATCHPACK_POLLING: "true"
+      WATCHPACK_POLLING_INTERVAL: "1000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - ./:/src/app
+      - /src/app/node_modules
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: earnly-postgres
+    environment:
+      POSTGRES_DB: earnly
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d earnly']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
