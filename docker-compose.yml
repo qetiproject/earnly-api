@@ -10,7 +10,7 @@ services:
       NODE_ENV: development
       PORT: 3000
       # Inside Docker network, reach Postgres by service name: `postgres`
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/earnly?schema=public
+      DATABASE_URL: ${DATABASE_URL}
       # Docker volume mount-ზე Nest watch ხშირად არ “გრძნობს” ცვლილებებს.
       # Polling-ს ჩართვა პრობლემას უმეტეს შემთხვევაში აგვარებს.
       CHOKIDAR_USEPOLLING: 'true'
