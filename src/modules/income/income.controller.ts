@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
@@ -16,11 +17,16 @@ export class IncomeController {
 
   @Get()
   @ApiOperation({ summary: 'Get all incomes' })
+  @ApiOkResponse({
+    description: 'List of incomes',
+    type: Income,
+    isArray: true,
+  })
   getAllIncomes(): Promise<Income[]> {
     return this.incomeService.findAll();
   }
 
-  @Post('/add')
+  @Post()
   @ApiOperation({ summary: 'Create income' })
   @ApiBody({ type: AddIncomeDto })
   @ApiCreatedResponse({ description: 'Income created', type: Income })

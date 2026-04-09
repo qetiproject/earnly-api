@@ -6,22 +6,32 @@ export enum Status {
   FAILED = 'failed',
 }
 
+export enum Currency {
+  GEL = 'GEL',
+  USD = 'USD',
+  EUR = 'EUR',
+}
+
 @Entity()
 export class Income {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
-  project_name!: string;
+  @Column({ name: 'project_name' })
+  projectName!: string;
 
-  @Column({ nullable: true })
-  client_name!: string;
+  @Column({ name: 'client_name' })
+  clientName!: string;
 
   @Column('decimal')
   amount!: number;
 
-  @Column({ default: 'GEL' })
-  currency!: string;
+  @Column({
+    type: 'enum',
+    enum: Currency,
+    default: Currency.GEL,
+  })
+  currency!: Currency;
 
   @Column({
     type: 'enum',
@@ -30,15 +40,23 @@ export class Income {
   })
   status!: Status;
 
-  @Column({ nullable: true })
+  @Column()
   description!: string;
 
-  @Column({ type: 'date' })
-  payment_date!: Date;
+  @Column({ name: 'payment_date', type: 'date' })
+  paymentDate!: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  created_at!: Date;
+  @Column({
+    name: 'created_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt!: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updated_at!: Date;
+  @Column({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt!: Date;
 }

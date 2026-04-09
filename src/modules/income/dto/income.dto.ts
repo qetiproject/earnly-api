@@ -1,23 +1,23 @@
-import { Status } from '../income.entity';
+import { Currency, Status } from '../income.entity';
 
-export class incomeDto {
+export class IncomeDto {
   id!: number;
 
-  project_name!: string;
+  projectName!: string;
 
-  client_name!: string;
+  clientName?: string;
 
   amount!: number;
 
-  currency!: string;
+  currency!: Currency;
 
   status!: Status;
 
-  description!: string;
+  description?: string;
 
-  payment_date!: Date;
+  paymentDate!: Date;
 
-  created_at!: Date;
+  createdAt!: Date;
 
-  updated_at!: Date;
+  updatedAt!: Date;
 }

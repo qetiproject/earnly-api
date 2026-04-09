@@ -1,26 +1,32 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsDateString, IsEnum, IsNumber, IsString } from 'class-validator';
-import { Status } from '../income.entity';
-
-export enum Currency {
-  GEL = 'GEL',
-  USD = 'USD',
-  EUR = 'EUR',
-}
+import {
+  IsDateString,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+  Min,
+} from 'class-validator';
+import { Currency, Status } from '../income.entity';
 
 export class AddIncomeDto {
   @ApiProperty({ example: 'test project' })
   @IsString()
-  project_name!: string;
+  @MaxLength(120)
+  projectName!: string;
 
-  @ApiProperty({ example: 'First Name' })
+  @ApiProperty({ example: 'First Name', required: false })
+  @IsOptional()
   @IsString()
-  client_name!: string;
+  @MaxLength(120)
+  clientName?: string;
 
   @ApiProperty({ example: 1000, type: Number })
   @Type(() => Number)
   @IsNumber()
+  @Min(0.01)
   amount!: number;
 
   @ApiProperty({ enum: Currency, example: Currency.USD })
@@ -31,11 +37,13 @@ export class AddIncomeDto {
   @IsEnum(Status)
   status!: Status;
 
-  @ApiProperty({ example: 'students management app' })
+  @ApiProperty({ example: 'students management app', required: false })
+  @IsOptional()
   @IsString()
-  description!: string;
+  @MaxLength(500)
+  description?: string;
 
   @ApiProperty({ example: '2026-04-09' })
   @IsDateString()
-  payment_date!: string;
+  paymentDate!: string;
 }
