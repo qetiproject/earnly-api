@@ -13,10 +13,10 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/earnly?schema=public
       # Docker volume mount-ზე Nest watch ხშირად არ “გრძნობს” ცვლილებებს.
       # Polling-ს ჩართვა პრობლემას უმეტეს შემთხვევაში აგვარებს.
-      CHOKIDAR_USEPOLLING: "true"
-      CHOKIDAR_INTERVAL: "1000"
-      WATCHPACK_POLLING: "true"
-      WATCHPACK_POLLING_INTERVAL: "1000"
+      CHOKIDAR_USEPOLLING: 'true'
+      CHOKIDAR_INTERVAL: '1000'
+      WATCHPACK_POLLING: 'true'
+      WATCHPACK_POLLING_INTERVAL: '1000'
     depends_on:
       postgres:
         condition: service_healthy
