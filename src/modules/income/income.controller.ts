@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -54,5 +55,13 @@ export class IncomeController {
     @Body() payload: Partial<UpdateIncomeDto>,
   ): Promise<Income> {
     return this.incomeService.update(id, payload);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete income' })
+  @ApiParam({ name: 'id', type: Number, example: 1 })
+  @ApiOkResponse({ description: 'Income deleted' })
+  async removeIncome(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.incomeService.removeIncome(id);
   }
 }

@@ -46,4 +46,12 @@ export class IncomeService {
     }
     return this.incomeRepository.save(income);
   }
+
+  async removeIncome(id: number): Promise<void> {
+    const income = await this.incomeRepository.findOneBy({ id });
+    if (!income) {
+      throw new NotFoundException(`Income with id ${id} not found`);
+    }
+    await this.incomeRepository.remove(income);
+  }
 }
