@@ -1,12 +1,22 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import { AddIncomeDto } from './dto/add-income.dto';
+import { UpdateIncomeDto } from './dto/update-income.dto';
 import { Income } from './income.entity';
 import { IncomeService } from './income.service';
 
@@ -32,5 +42,17 @@ export class IncomeController {
   @ApiCreatedResponse({ description: 'Income created', type: Income })
   addincome(@Body() payload: AddIncomeDto): Promise<Income> {
     return this.incomeService.create(payload);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update income' })
+  @ApiParam({ name: 'id', type: Number, example: 1 })
+  @ApiBody({ type: UpdateIncomeDto })
+  @ApiOkResponse({ type: Income })
+  updateIncome(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: Partial<UpdateIncomeDto>,
+  ): Promise<Income> {
+    return this.incomeService.update(id, payload);
   }
 }
