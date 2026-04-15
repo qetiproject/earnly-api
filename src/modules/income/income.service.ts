@@ -16,8 +16,8 @@ export class IncomeService {
     private readonly incomeRepository: Repository<Income>,
   ) {}
 
-  findAll(page = 1, limit = 10): Promise<Income[]> {
-    return this.incomeRepository.find({
+  async findAll(page: number, limit: number): Promise<Income[]> {
+    return await this.incomeRepository.find({
       order: { createdAt: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,

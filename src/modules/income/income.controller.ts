@@ -7,8 +7,15 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ResponseDto } from 'src/shared/dto/response.dto';
 import { ApiResponse } from 'src/shared/shell/api.response';
 import { ApiVoidResponse } from 'src/shared/shell/api.void.response';
@@ -18,15 +25,20 @@ import { Income } from './income.entity';
 import { IncomeService } from './income.service';
 
 @ApiTags('income')
-@Controller('income')
+@Controller('incomes')
 export class IncomeController {
   constructor(private readonly incomeService: IncomeService) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all incomes' })
+  @ApiQuery({ name: 'page', required: false, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, example: 10 })
   @ApiResponse(Income)
-  async getAllIncomes(): Promise<ResponseDto<Income[]>> {
-    const data = await this.incomeService.findAll();
+  async getAllIncomes(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ): Promise<ResponseDto<Income[]>> {
+    const data = await this.incomeService.findAll(page, limit);
     return {
       success: true,
       message: 'Incomes retrieved successfully',
