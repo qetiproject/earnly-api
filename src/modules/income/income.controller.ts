@@ -16,6 +16,7 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { ResponseDto } from 'src/shared/dto/response.dto';
 import { ApiResponse } from 'src/shared/shell/api.response';
 import { ApiVoidResponse } from 'src/shared/shell/api.void.response';
@@ -35,9 +36,9 @@ export class IncomeController {
   @ApiQuery({ name: 'limit', required: false, example: 10 })
   @ApiResponse(Income)
   async getAllIncomes(
-    @Query('page') page: number,
-    @Query('limit') limit: number,
+    @Query() query: PaginationDto,
   ): Promise<ResponseDto<Income[]>> {
+    const { page, limit } = query;
     const data = await this.incomeService.findAll(page, limit);
     return {
       success: true,
