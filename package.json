@@ -8,7 +8,7 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "migration:generate": "node -r ts-node/register ./node_modules/typeorm/cli.js -d typeorm.config.ts migration:generate ./src/database/migrations/Init",
+    "migration:generate": "node -r ts-node/register ./node_modules/typeorm/cli.js -d typeorm.config.ts migration:generate",
     "migration:run": "node -r ts-node/register ./node_modules/typeorm/cli.js -d typeorm.config.ts migration:run",
     "migration:revert": "node -r ts-node/register ./node_modules/typeorm/cli.js -d typeorm.config.ts migration:revert",
     "start": "nest start",
