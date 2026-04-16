@@ -16,6 +16,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Earnly')
     .setDescription('Manage freelance payments and taxes easily')
+    .addServer('http://localhost:3000')
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

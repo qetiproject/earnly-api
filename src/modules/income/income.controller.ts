@@ -25,7 +25,7 @@ import { UpdateIncomeDto } from './dto/update-income.dto';
 import { Income } from './income.entity';
 import { IncomeService } from './income.service';
 
-@ApiTags('income')
+@ApiTags('Incomes')
 @Controller('incomes')
 export class IncomeController {
   constructor(private readonly incomeService: IncomeService) {}

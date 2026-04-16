@@ -18,10 +18,9 @@ export class AddIncomeDto {
   projectName!: string;
 
   @ApiProperty({ example: 'First Name', required: false })
-  @IsOptional()
   @IsString()
   @MaxLength(120)
-  clientName?: string;
+  clientName!: string;
 
   @ApiProperty({ example: 1000, type: Number })
   @Type(() => Number)
